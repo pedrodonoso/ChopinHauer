@@ -7,7 +7,9 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,27 +40,51 @@ public class EquipoControlador {
 	
 	//obtener todos los equipos 
 	@GetMapping("/all")
-	public List<Equipo> getAllEquipo() {
-		return (List<Equipo>) repo.findAll();
+	public ResponseEntity<Object> getAllEquipo() {
+		List<Equipo> lista = (List<Equipo>) repo.findAll();
+		if (lista.isEmpty()) {
+			return new ResponseEntity<Object>(
+					"No se encuentran equipos.",
+					new HttpHeaders(),
+					HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<Object>(
+					//(List<Equipo>) repo.findAll(),
+					lista,
+					new HttpHeaders(),
+					HttpStatus.OK);
+		}
 	}
 	
 	//obtener equipo por id
 	@GetMapping("/byid")
-	public Equipo getByIdEquipo(@RequestParam(name="id") Integer id) throws Exception {
+	public ResponseEntity<Object> getByIdEquipo(@RequestParam(name="id") Integer id) throws Exception {
 		Optional<Equipo> equipofound = repo.findById(id);
 		if (!equipofound.isPresent()) {
-			throw new Exception("Equipo no encontrado \n");
-		}else {
-			return equipofound.get();
-		}
+			//throw new Exception("Equipo no encontrado \n");
+			return new ResponseEntity<Object>(
+					"Equipo no encontrado",
+					new HttpHeaders(),
+					HttpStatus.NOT_FOUND );
+		} else {
+			return new ResponseEntity<Object>(
+					equipofound.get(),
+					new HttpHeaders(),
+					HttpStatus.OK );
+		} 
+		
 	}
-	@ResponseStatus(HttpStatus.OK)
+	
 	@PostMapping("/addToTeam")
-	public String addToTeam(@RequestParam(name="id") Integer id, @RequestParam(name="idlist") String[] idList) throws Exception {
+	public ResponseEntity<Object> addToTeam(@RequestParam(name="id") Integer id, @RequestParam(name="idlist") String[] idList) throws Exception {
 		Optional<Equipo> newEquipo =  repo.findById(id);
 		
 		if (!newEquipo.isPresent()) {
-			throw new Exception("Equipo no encontrado \n");
+			//throw new Exception("Equipo no encontrado \n");
+			return new ResponseEntity<Object>(
+					"Equipo ya se encuentra",
+					new HttpHeaders(),
+					HttpStatus.NOT_ACCEPTABLE );
 		} else {
 			Equipo Equipofound = newEquipo.get();
 			
@@ -75,17 +101,25 @@ public class EquipoControlador {
 		    }
 		    Equipofound.setPersonalEquipo(newGrupo);
 			repo.save(Equipofound);
-			return "Updated";
+			return new ResponseEntity<Object>(
+					Equipofound,
+					new HttpHeaders(),
+					HttpStatus.OK
+					);
 		}
 	}
 	
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping("/deleteToTeam")
-	public String deleteToTeam(@RequestParam(name="id") Integer id, @RequestParam(name="idlist") String[] idList) throws Exception {
+	public ResponseEntity<Object> deleteToTeam(@RequestParam(name="id") Integer id, @RequestParam(name="idlist") String[] idList) throws Exception {
 		Optional<Equipo> newEquipo =  repo.findById(id);
 		
 		if (!newEquipo.isPresent()) {
-			throw new Exception("Equipo no encontrado \n");
+			//throw new Exception("Equipo no encontrado \n");
+			return new ResponseEntity<Object>(
+					"Equipo no se encuentra",
+					new HttpHeaders(),
+					HttpStatus.NOT_FOUND );
 		} else {
 			
 			Equipo Equipofound = newEquipo.get();
@@ -110,30 +144,43 @@ public class EquipoControlador {
 		    
 		    Equipofound.setPersonalEquipo(newGrupo);
 			repo.save(Equipofound);
-			return "Deleted";
+			return new ResponseEntity<Object>(
+					Equipofound,
+					new HttpHeaders(),
+					HttpStatus.OK
+					);
 		}
 	}
 	
 			
 	//eliminar equipo
-	@PostMapping("/delete")
+	@PostMapping("/deleteTeam")
 	@ResponseStatus(HttpStatus.OK)
-	public Integer deletePServicio(@RequestParam(name="id") Integer id) throws Exception {
+	public ResponseEntity<Object> deletePServicio(@RequestParam(name="id") Integer id) throws Exception {
 		Optional<Equipo> newEquipo =  repo.findById(id);
 		
 		if (!newEquipo.isPresent()) {
-			throw new Exception("Equipo no encontrado \n");
+			//throw new Exception("Equipo no encontrado \n");
+			return new ResponseEntity<Object>(
+					"Equipo no encontrado",
+					new HttpHeaders(),
+					HttpStatus.NOT_FOUND );
 		} else {
 			//repo.deleteById(id);
 			//repo.deleteById(id);
 			repo.deleteById(id);
-			return null;
+			return new ResponseEntity<Object>(
+					"Team " + id + " eliminado",
+					new HttpHeaders(),
+					HttpStatus.OK
+					);
 		}
+		
 	}
 		
 	//agregar equipo	
 	@PostMapping("/add") 
-	public @ResponseBody String addNewEquipo (@RequestParam(name="tag") String Tag,
+	public ResponseEntity<Object> addNewEquipo (@RequestParam(name="tag") String Tag,
 			@RequestParam(name="idlist") String[]  idList) throws Exception {
 	    // @ResponseBody means the returned String is the response, not a view name
 	    // @RequestParam means it is a parameter from the GET or POST request
@@ -147,7 +194,11 @@ public class EquipoControlador {
 	    	Integer id = Integer.parseInt(idList[i]);
 	    	Optional<PServicio> personalfound = srepo.findById(id);
 			if (!personalfound.isPresent()) {
-				throw new Exception("Personal no encontrado \n");
+				//throw new Exception("Personal no encontrado \n");
+				return new ResponseEntity<Object>(
+						"Personal no encontrado",
+						new HttpHeaders(),
+						HttpStatus.NOT_FOUND );
 			}else {
 				newGrupo.add(personalfound.get());
 			}    	
@@ -155,7 +206,11 @@ public class EquipoControlador {
 	    newEquipo.setPersonalEquipo(newGrupo);
 	    
 	    repo.save(newEquipo);
-	    return "Saved";
+	    return new ResponseEntity<Object>(
+				newEquipo,
+				new HttpHeaders(),
+				HttpStatus.OK
+				);
 	  }
 	
 }

@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,30 +38,45 @@ public class PServicioControlador {
 	PServicioRepositorio repo;
 	
 	@GetMapping("/all")
-	public ResponseEntity getAllPServicio() {
+	public ResponseEntity<Object> getAllPServicio() {
 		Iterable<PServicio> allPServicio = repo.findAll();
 		
 		List<PServicio> lista = new ArrayList<PServicio>(); 
 		allPServicio.iterator().forEachRemaining(lista::add);
 		if(lista.isEmpty()) {
 			//return Collections.emptyList();
-			return new ResponseEntity(new EmptyJsonResponse(), HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Object>(
+					new EmptyJsonResponse(), 
+					new HttpHeaders(),
+					HttpStatus.NOT_FOUND);
+			
 		} else {
-			return new ResponseEntity(lista, HttpStatus.OK);
+			return new ResponseEntity<Object>(
+					lista,
+					new HttpHeaders(),
+					HttpStatus.OK
+					);
 			//return lista;
 		}
 		
 	}
 	
 	@GetMapping("/byid") 
-	public PServicio getByIdPServicio(Integer id) throws Exception {
-		System.out.print("HOLAAAA \n");
-		System.out.print(id);
+	public ResponseEntity<Object> getByIdPServicio(Integer id) throws Exception {
 		Optional<PServicio> pserviciofound = repo.findById(id);
 		if (!pserviciofound.isPresent()) {
-			throw new Exception("Personal no encontrado");
+			//throw new Exception("Personal no encontrado");
+			return new ResponseEntity<Object>(
+					"Personal no encontrado",
+					new HttpHeaders(),
+					HttpStatus.NOT_FOUND
+					);
 		}else {
-			return pserviciofound.get();
+			return new ResponseEntity<Object>(
+					pserviciofound.get(),
+					new HttpHeaders(),
+					HttpStatus.OK
+					);
 		}
 		
 	}
@@ -67,70 +84,83 @@ public class PServicioControlador {
 	//funca mas o menos lindo
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping("/update")
-	public Integer updatePServicio(@RequestParam(name="id") Integer id,
-			@RequestParam(name="nombre") String nombre, 
-		    @RequestParam(name="apellido") String apellido,
-		    @RequestParam(name="run") Integer run,
-		    @RequestParam(name="profesion") String profesion,
-		    @RequestParam(name="telefono") Integer telefono, 
-		    @RequestParam(name="email") String email) throws Exception {
+	public ResponseEntity<Object> updatePServicio(@RequestBody PServicio upPServicio) throws Exception {
 		
-		Optional<PServicio> newPServicio =  repo.findById(id);
+		Optional<PServicio> newPServicio =  repo.findById(upPServicio.getId());
 		
 		if (!newPServicio.isPresent()) {
-			throw new Exception("Personal no encontrado");
+			//throw new Exception("Personal no encontrado");
+			return new ResponseEntity<Object>(
+					"Personal no encontrado",
+					new HttpHeaders(),
+					HttpStatus.NOT_FOUND
+					);
 		}else {
 			
 			PServicio PServiciofound = newPServicio.get();
-			PServiciofound.setNombres(nombre);
-			PServiciofound.setApellidos(apellido );
-			PServiciofound.setRUN(run);
-			PServiciofound.setProfesion(profesion);
-			PServiciofound.setTelefono(telefono);
-			PServiciofound.setEmail(email);
+			PServiciofound.setNombres(upPServicio.getNombres());
+			PServiciofound.setApellidos(upPServicio.getApellidos() );
+			PServiciofound.setRun(upPServicio.getRun());
+			PServiciofound.setProfesion(upPServicio.getProfesion());
+			PServiciofound.setTelefono(upPServicio.getTelefono());
+			PServiciofound.setEmail(upPServicio.getEmail());
 			
 			//if(checkUserValid(user)) {
 			//	user = repositorio.save(user);
 			//}
 			
 			repo.save(PServiciofound);
-			
-			return null;
+			return new ResponseEntity<Object>(
+					PServiciofound,
+					new HttpHeaders(),
+					HttpStatus.OK
+					);
 		}
 	}
 	
 	//funca mas o menos lindo
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping(path="/add") // Map ONLY POST Requests
-	  public @ResponseBody PServicio addPServicio(@RequestParam(name="nombre") String nombre, 
-	      @RequestParam(name="apellido") String apellido,
-	      @RequestParam(name="run") Integer run,
-	      @RequestParam(name="profesion") String profesion,
-	      @RequestParam(name="telefono") Integer telefono, 
-	      @RequestParam(name="email") String email) {
-		
+	  public ResponseEntity<Object> addPServicio(@RequestBody PServicio newPServicio) {
+		/*
 		PServicio newPServicio = new PServicio();
-		newPServicio.setNombres(nombre);
-		newPServicio.setApellidos(apellido);
-		newPServicio.setRUN(run);
-		newPServicio.setProfesion(profesion);
-		newPServicio.setTelefono(telefono);
-		newPServicio.setEmail(email);
-		
+		newPServicio.setNombres(newPServicio.getNombres());
+		newPServicio.setApellidos(newPServicio.getApellidos());
+		newPServicio.setRun(newPServicio.getRun());
+		newPServicio.setProfesion(newPServicio.getProfesion());
+		newPServicio.setTelefono(newPServicio.getTelefono());
+		newPServicio.setEmail(newPServicio.getEmail());
+		*/
+		// validacion de datos
 	    repo.save(newPServicio);
-	    return newPServicio;
+	    return new ResponseEntity<Object>(
+	    		newPServicio,
+				new HttpHeaders(),
+				HttpStatus.OK
+				);
 	  }
 	
 	
 	@PostMapping("/delete")
-	public Integer deletePServicio(Integer id) throws Exception {
+	public ResponseEntity<Object> deletePServicio(Integer id) throws Exception {
 		Optional<PServicio> newPServicio =  repo.findById(id);
 		
 		if (!newPServicio.isPresent()) {
-			throw new Exception("Personal no encontrado");
+			//throw new Exception("Personal no encontrado");
+			return new ResponseEntity<Object>(
+					"Personal no encontrado",
+					new HttpHeaders(),
+					HttpStatus.NOT_FOUND
+					);
 		} else {
+			PServicio pservicioDeleted = newPServicio.get();
+			
 			repo.deleteById(id);
-			return null;
+			return new ResponseEntity<Object>(
+		    		"Personal de servicio llamad@ "+ pservicioDeleted.getNombres() +"fué eliminado ",
+					new HttpHeaders(),
+					HttpStatus.OK
+					);
 		}
 	}
 	

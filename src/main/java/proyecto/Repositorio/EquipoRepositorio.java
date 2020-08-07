@@ -13,6 +13,7 @@ public interface EquipoRepositorio extends CrudRepository<Equipo,Integer>{
 	
 	public Optional<Equipo> findById(Integer id);
 	
+	
 	public void  deleteById(Integer id);
 	//public List<Usuario> findAlByRol(String rol);
 	

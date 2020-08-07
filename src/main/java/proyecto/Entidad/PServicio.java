@@ -16,7 +16,7 @@ public class PServicio implements Serializable {
 
     private Integer id;
     private String nombres, apellidos;
-    Integer RUN;
+    Integer run;
     private String profesion;
     private Integer telefono;
     private String email;
@@ -32,8 +32,8 @@ public class PServicio implements Serializable {
 		return apellidos;
 	}
 	
-	public Integer getRUN() {
-        return RUN;
+	public Integer getRun() {
+        return run;
     }
     public String getProfesion() {
         return profesion;
@@ -55,8 +55,8 @@ public class PServicio implements Serializable {
     public void setApellidos(String apellidos) {
 		this.apellidos = apellidos;
 	}
-    public void setRUN(Integer rUN) {
-        RUN = rUN;
+    public void setRun(Integer run) {
+        this.run = run;
     }
     public void setProfesion(String profesion) {
         this.profesion = profesion;
