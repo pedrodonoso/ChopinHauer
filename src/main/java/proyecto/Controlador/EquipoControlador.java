@@ -29,22 +29,22 @@ import proyecto.Repositorio.PServicioRepositorio;
 
 @RestController
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT})
-@RequestMapping("/team") 
+@RequestMapping("/team")
 public class EquipoControlador {
-	
+
 	@Autowired
 	EquipoRepositorio repo;
-	
+
 	@Autowired
 	PServicioRepositorio srepo;
-	
-	//obtener todos los equipos 
-	@GetMapping("/all")
+
+	//obtener todos los equipos
+	@GetMapping("/all", produces= {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<Object> getAllEquipo() {
 		List<Equipo> lista = (List<Equipo>) repo.findAll();
 		if (lista.isEmpty()) {
 			return new ResponseEntity<Object>(
-					"No se encuentran equipos.",
+					new EmptyJsonResponse(),
 					new HttpHeaders(),
 					HttpStatus.NO_CONTENT);
 		} else {
@@ -55,7 +55,7 @@ public class EquipoControlador {
 					HttpStatus.OK);
 		}
 	}
-	
+
 	//obtener equipo por id
 	@GetMapping("/byid")
 	public ResponseEntity<Object> getByIdEquipo(@RequestParam(name="id") Integer id) throws Exception {
@@ -71,14 +71,14 @@ public class EquipoControlador {
 					equipofound.get(),
 					new HttpHeaders(),
 					HttpStatus.OK );
-		} 
-		
+		}
+
 	}
-	
+
 	@PostMapping("/addToTeam")
 	public ResponseEntity<Object> addToTeam(@RequestParam(name="id") Integer id, @RequestParam(name="idlist") String[] idList) throws Exception {
 		Optional<Equipo> newEquipo =  repo.findById(id);
-		
+
 		if (!newEquipo.isPresent()) {
 			//throw new Exception("Equipo no encontrado \n");
 			return new ResponseEntity<Object>(
@@ -87,7 +87,7 @@ public class EquipoControlador {
 					HttpStatus.NOT_ACCEPTABLE );
 		} else {
 			Equipo Equipofound = newEquipo.get();
-			
+
 		 	//List<PServicio> newGrupo = new ArrayList<PServicio>();
 			List<PServicio> newGrupo = Equipofound.getPersonalEquipo();
 		    for(int i=0; i< idList.length; i++) {
@@ -97,7 +97,7 @@ public class EquipoControlador {
 					throw new Exception("Personal no encontrado \n");
 				}else {
 					newGrupo.add(personalfound.get());
-				}    	
+				}
 		    }
 		    Equipofound.setPersonalEquipo(newGrupo);
 			repo.save(Equipofound);
@@ -108,12 +108,12 @@ public class EquipoControlador {
 					);
 		}
 	}
-	
+
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping("/deleteToTeam")
 	public ResponseEntity<Object> deleteToTeam(@RequestParam(name="id") Integer id, @RequestParam(name="idlist") String[] idList) throws Exception {
 		Optional<Equipo> newEquipo =  repo.findById(id);
-		
+
 		if (!newEquipo.isPresent()) {
 			//throw new Exception("Equipo no encontrado \n");
 			return new ResponseEntity<Object>(
@@ -121,11 +121,11 @@ public class EquipoControlador {
 					new HttpHeaders(),
 					HttpStatus.NOT_FOUND );
 		} else {
-			
+
 			Equipo Equipofound = newEquipo.get();
 			List<PServicio> newGrupo = Equipofound.getPersonalEquipo();
-		 	
-			
+
+
 		    for(int i=0; i< idList.length; i++) {
 		    	Integer idItem = Integer.parseInt(idList[i]);
 		    	Optional<PServicio> personalfound = srepo.findById(idItem);
@@ -136,12 +136,12 @@ public class EquipoControlador {
 					//newGrupo.remo
 					PServicio pServiceItem = personalfound.get();
 					if(newGrupo.contains(pServiceItem)) {
-						newGrupo.remove(pServiceItem);						
+						newGrupo.remove(pServiceItem);
 					}
-					
-				}    	
+
+				}
 		    }
-		    
+
 		    Equipofound.setPersonalEquipo(newGrupo);
 			repo.save(Equipofound);
 			return new ResponseEntity<Object>(
@@ -151,14 +151,14 @@ public class EquipoControlador {
 					);
 		}
 	}
-	
-			
+
+
 	//eliminar equipo
 	@PostMapping("/deleteTeam")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Object> deletePServicio(@RequestParam(name="id") Integer id) throws Exception {
 		Optional<Equipo> newEquipo =  repo.findById(id);
-		
+
 		if (!newEquipo.isPresent()) {
 			//throw new Exception("Equipo no encontrado \n");
 			return new ResponseEntity<Object>(
@@ -175,11 +175,11 @@ public class EquipoControlador {
 					HttpStatus.OK
 					);
 		}
-		
+
 	}
-		
-	//agregar equipo	
-	@PostMapping("/add") 
+
+	//agregar equipo
+	@PostMapping("/add")
 	public ResponseEntity<Object> addNewEquipo (@RequestParam(name="tag") String Tag,
 			@RequestParam(name="idlist") String[]  idList) throws Exception {
 	    // @ResponseBody means the returned String is the response, not a view name
@@ -187,9 +187,9 @@ public class EquipoControlador {
 
 	    Equipo newEquipo = new Equipo();
 	    newEquipo.setTag(Tag);
-	    
+
 	 	List<PServicio> newGrupo = new ArrayList<PServicio>();
-	 	
+
 	    for(int i=0; i< idList.length; i++) {
 	    	Integer id = Integer.parseInt(idList[i]);
 	    	Optional<PServicio> personalfound = srepo.findById(id);
@@ -201,10 +201,10 @@ public class EquipoControlador {
 						HttpStatus.NOT_FOUND );
 			}else {
 				newGrupo.add(personalfound.get());
-			}    	
+			}
 	    }
 	    newEquipo.setPersonalEquipo(newGrupo);
-	    
+
 	    repo.save(newEquipo);
 	    return new ResponseEntity<Object>(
 				newEquipo,
@@ -212,5 +212,10 @@ public class EquipoControlador {
 				HttpStatus.OK
 				);
 	  }
-	
+
+
+		@JsonSerialize
+		public class EmptyJsonResponse { }
+
+		}
 }

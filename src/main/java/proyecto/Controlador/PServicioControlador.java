@@ -37,7 +37,9 @@ public class PServicioControlador {
 	@Autowired
 	PServicioRepositorio repo;
 
-	@GetMapping("/all")
+
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping("/all" , produces= {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<Object> getAllPServicio() {
 		Iterable<PServicio> allPServicio = repo.findAll();
 
@@ -61,7 +63,8 @@ public class PServicioControlador {
 
 	}
 
-	@GetMapping("/byid")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping("/byid", produces= {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<Object> getByIdPServicio(Integer id) throws Exception {
 		Optional<PServicio> pserviciofound = repo.findById(id);
 		if (!pserviciofound.isPresent()) {
@@ -83,7 +86,7 @@ public class PServicioControlador {
 
 	//funca mas o menos lindo
 	@ResponseStatus(HttpStatus.OK)
-	@PostMapping("/update")
+	@PostMapping("/update" ,consumes = {MediaType.APPLICATION_JSON_VALUE}, produces= {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<Object> updatePServicio(@RequestBody PServicio upPServicio) throws Exception {
 
 		Optional<PServicio> newPServicio =  repo.findById(upPServicio.getId());
@@ -120,7 +123,7 @@ public class PServicioControlador {
 
 	//funca mas o menos lindo
 	@ResponseStatus(HttpStatus.OK)
-	@PostMapping(path="/add", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}) // Map ONLY POST Requests
+	@PostMapping(path="/add", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces= {MediaType.APPLICATION_JSON_VALUE}) // Map ONLY POST Requests
 	  public ResponseEntity<Object> addPServicio(@RequestBody PServicio newPServicio) {
 		/*
 		PServicio newPServicio = new PServicio();
@@ -135,14 +138,14 @@ public class PServicioControlador {
 	    repo.save(newPServicio);
 	    return new ResponseEntity<Object>(
 	    		newPServicio,
-				new HttpHeaders(),
-				HttpStatus.OK
+					new HttpHeaders(),
+					HttpStatus.OK
 				);
 	  }
 
-
-	@PostMapping("/delete")
-	public ResponseEntity<Object> deletePServicio(Integer id) throws Exception {
+	@ResponseStatus(HttpStatus.OK)
+	@PostMapping("/delete" )
+	public ResponseEntity<Object> deletePServicio(@RequestParam(name="id") Integer id) throws Exception {
 		Optional<PServicio> newPServicio =  repo.findById(id);
 
 		if (!newPServicio.isPresent()) {
