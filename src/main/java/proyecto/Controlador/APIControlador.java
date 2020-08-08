@@ -19,5 +19,13 @@ public class APIControlador {
   public String inicio(){
     return "Hola Bienvenid@ a la API de Compumundohipermegared";
   }
+  @GetMapping("/pservice")
+  public String pserviceInicio(){
+    return "Hola Bienvenid@ a la sección Personal de Servicio de Compumundohipermegared";
+  }
 
+  @GetMapping("/team")
+  public String teamInicio(){
+    return "Hola Bienvenid@ a la sección Equipo de Compumundohipermegared";
+  }
 }

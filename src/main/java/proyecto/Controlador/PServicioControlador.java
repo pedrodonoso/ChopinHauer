@@ -49,7 +49,7 @@ public class PServicioControlador {
 		if(lista.isEmpty()) {
 			//return Collections.emptyList();
 			return new ResponseEntity<Object>(
-					new EmptyJsonResponse(),
+					lista,
 					new HttpHeaders(),
 					HttpStatus.NOT_FOUND);
 
@@ -161,7 +161,7 @@ public class PServicioControlador {
 
 			repo.deleteById(id);
 			return new ResponseEntity<Object>(
-		    		"Personal de servicio llamad@ "+ pservicioDeleted.getNombres() +"fué eliminado ",
+		    		"Personal de servicio llamad@ "+ pservicioDeleted.getNombres() +" fué eliminado ",
 					new HttpHeaders(),
 					HttpStatus.OK
 					);
