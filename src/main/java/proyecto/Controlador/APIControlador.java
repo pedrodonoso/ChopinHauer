@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class APIControlador {
 
-  @GetMapping
+  @GetMapping("/")
   public String inicio(){
     return "Hola Bienvenid@ a la API de Compumundohipermegared";
   }
