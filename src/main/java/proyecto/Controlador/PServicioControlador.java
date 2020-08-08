@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -39,7 +40,7 @@ public class PServicioControlador {
 
 
 	@ResponseStatus(HttpStatus.OK)
-	@GetMapping("/all" , produces= {MediaType.APPLICATION_JSON_VALUE})
+	@GetMapping(path="/all" , produces= MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> getAllPServicio() {
 		Iterable<PServicio> allPServicio = repo.findAll();
 
@@ -64,7 +65,7 @@ public class PServicioControlador {
 	}
 
 	@ResponseStatus(HttpStatus.OK)
-	@GetMapping("/byid", produces= {MediaType.APPLICATION_JSON_VALUE})
+	@GetMapping(path="/byid", produces= MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> getByIdPServicio(Integer id) throws Exception {
 		Optional<PServicio> pserviciofound = repo.findById(id);
 		if (!pserviciofound.isPresent()) {
@@ -86,7 +87,7 @@ public class PServicioControlador {
 
 	//funca mas o menos lindo
 	@ResponseStatus(HttpStatus.OK)
-	@PostMapping("/update" ,consumes = {MediaType.APPLICATION_JSON_VALUE}, produces= {MediaType.APPLICATION_JSON_VALUE})
+	@PostMapping(path="/update" ,consumes = MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> updatePServicio(@RequestBody PServicio upPServicio) throws Exception {
 
 		Optional<PServicio> newPServicio =  repo.findById(upPServicio.getId());
@@ -123,7 +124,7 @@ public class PServicioControlador {
 
 	//funca mas o menos lindo
 	@ResponseStatus(HttpStatus.OK)
-	@PostMapping(path="/add", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces= {MediaType.APPLICATION_JSON_VALUE}) // Map ONLY POST Requests
+	@PostMapping(path="/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
 	  public ResponseEntity<Object> addPServicio(@RequestBody PServicio newPServicio) {
 		/*
 		PServicio newPServicio = new PServicio();

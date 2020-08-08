@@ -9,6 +9,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -40,7 +41,7 @@ public class EquipoControlador {
 	PServicioRepositorio srepo;
 
 	//obtener todos los equipos
-	@GetMapping("/all", produces= {MediaType.APPLICATION_JSON_VALUE})
+	@GetMapping(path="/all", produces= MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> getAllEquipo() {
 		List<Equipo> lista = (List<Equipo>) repo.findAll();
 		if (lista.isEmpty()) {
