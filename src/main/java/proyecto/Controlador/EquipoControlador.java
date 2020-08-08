@@ -67,7 +67,7 @@ public class EquipoControlador {
 			return new ResponseEntity<Object>(
 					"Equipo no encontrado",
 					new HttpHeaders(),
-					HttpStatus.NOT_FOUND );
+					HttpStatus.OK );
 		} else {
 			return new ResponseEntity<Object>(
 					equipofound.get(),
@@ -86,7 +86,7 @@ public class EquipoControlador {
 			return new ResponseEntity<Object>(
 					"Equipo no se encuentra",
 					new HttpHeaders(),
-					HttpStatus.NOT_FOUND );
+					HttpStatus.OK );
 		} else {
 			Equipo Equipofound = newEquipo.get();
 
@@ -100,7 +100,7 @@ public class EquipoControlador {
 					return new ResponseEntity<Object>(
 							"Personal no encontrado",
 							new HttpHeaders(),
-							HttpStatus.NOT_FOUND );
+							HttpStatus.OK );
 				}else {
 					newGrupo.add(personalfound.get());
 				}
@@ -125,7 +125,7 @@ public class EquipoControlador {
 			return new ResponseEntity<Object>(
 					"Equipo no se encuentra",
 					new HttpHeaders(),
-					HttpStatus.NOT_FOUND );
+					HttpStatus.OK );
 		} else {
 
 			Equipo Equipofound = newEquipo.get();
@@ -140,7 +140,7 @@ public class EquipoControlador {
 					return new ResponseEntity<Object>(
 							"Personal "+ personalfound.get().getNombres() +" no encontrado",
 							new HttpHeaders(),
-							HttpStatus.NOT_FOUND );
+							HttpStatus.OK );
 				}else {
 					//newGrupo.add(personalfound.get());
 					//newGrupo.remo
@@ -174,7 +174,7 @@ public class EquipoControlador {
 			return new ResponseEntity<Object>(
 					"Equipo no encontrado",
 					new HttpHeaders(),
-					HttpStatus.NOT_FOUND );
+					HttpStatus.OK );
 		} else {
 			//repo.deleteById(id);
 			//repo.deleteById(id);
@@ -208,7 +208,7 @@ public class EquipoControlador {
 				return new ResponseEntity<Object>(
 						"Personal no encontrado",
 						new HttpHeaders(),
-						HttpStatus.NOT_FOUND );
+						HttpStatus.OK );
 			}else {
 				newGrupo.add(personalfound.get());
 			}

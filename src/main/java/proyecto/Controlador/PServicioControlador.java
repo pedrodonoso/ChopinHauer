@@ -38,7 +38,6 @@ public class PServicioControlador {
 	@Autowired
 	PServicioRepositorio repo;
 
-
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(path="/all" , produces= MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> getAllPServicio() {
@@ -51,7 +50,7 @@ public class PServicioControlador {
 			return new ResponseEntity<Object>(
 					lista,
 					new HttpHeaders(),
-					HttpStatus.NO_CONTENT);
+					HttpStatus.OK);
 
 		} else {
 			return new ResponseEntity<Object>(
@@ -73,7 +72,7 @@ public class PServicioControlador {
 			return new ResponseEntity<Object>(
 					"Personal no encontrado",
 					new HttpHeaders(),
-					HttpStatus.NOT_FOUND
+					HttpStatus.OK
 					);
 		}else {
 			return new ResponseEntity<Object>(
@@ -97,7 +96,7 @@ public class PServicioControlador {
 			return new ResponseEntity<Object>(
 					"Personal no encontrado",
 					new HttpHeaders(),
-					HttpStatus.NOT_FOUND
+					HttpStatus.OK
 					);
 		}else {
 
@@ -154,7 +153,7 @@ public class PServicioControlador {
 			return new ResponseEntity<Object>(
 					"Personal no encontrado",
 					new HttpHeaders(),
-					HttpStatus.NOT_FOUND
+					HttpStatus.OK
 					);
 		} else {
 			PServicio pservicioDeleted = newPServicio.get();

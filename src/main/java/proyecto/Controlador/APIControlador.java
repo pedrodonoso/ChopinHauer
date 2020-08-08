@@ -17,7 +17,7 @@ public class APIControlador {
 
   @GetMapping("/")
   public String inicio(){
-    return "Hola Bienvenid@ a la API de Compumundohipermegared v1.2.3";
+    return "Hola Bienvenid@ a la API de Compumundohipermegared v1.2.4";
   }
   @GetMapping("/pservice")
   public String pserviceInicio(){
