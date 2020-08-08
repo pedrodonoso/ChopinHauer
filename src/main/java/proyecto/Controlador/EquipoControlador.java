@@ -214,8 +214,8 @@ public class EquipoControlador {
 	  }
 
 
-		@JsonSerialize
-		public class EmptyJsonResponse { }
 
-		}
+@JsonSerialize
+public class EmptyJsonResponse { }
+
 }
