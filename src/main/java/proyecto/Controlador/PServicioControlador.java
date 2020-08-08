@@ -51,7 +51,7 @@ public class PServicioControlador {
 			return new ResponseEntity<Object>(
 					lista,
 					new HttpHeaders(),
-					HttpStatus.NOT_FOUND);
+					HttpStatus.NO_CONTENT);
 
 		} else {
 			return new ResponseEntity<Object>(

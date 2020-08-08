@@ -46,9 +46,9 @@ public class EquipoControlador {
 		List<Equipo> lista = (List<Equipo>) repo.findAll();
 		if (lista.isEmpty()) {
 			return new ResponseEntity<Object>(
-					new EmptyJsonResponse(),
+					lista,
 					new HttpHeaders(),
-					HttpStatus.NO_CONTENT);
+					HttpStatus.OK);
 		} else {
 			return new ResponseEntity<Object>(
 					//(List<Equipo>) repo.findAll(),
@@ -84,9 +84,9 @@ public class EquipoControlador {
 		if (!newEquipo.isPresent()) {
 			//throw new Exception("Equipo no encontrado \n");
 			return new ResponseEntity<Object>(
-					"Equipo ya se encuentra",
+					"Equipo no se encuentra",
 					new HttpHeaders(),
-					HttpStatus.NOT_ACCEPTABLE );
+					HttpStatus.NOT_FOUND );
 		} else {
 			Equipo Equipofound = newEquipo.get();
 
@@ -96,7 +96,11 @@ public class EquipoControlador {
 		    	Integer idItem = Integer.parseInt(idList[i]);
 		    	Optional<PServicio> personalfound = srepo.findById(idItem);
 				if (!personalfound.isPresent()) {
-					throw new Exception("Personal no encontrado \n");
+					//throw new Exception("Personal no encontrado \n");
+					return new ResponseEntity<Object>(
+							"Personal no encontrado",
+							new HttpHeaders(),
+							HttpStatus.NOT_FOUND );
 				}else {
 					newGrupo.add(personalfound.get());
 				}
@@ -132,7 +136,11 @@ public class EquipoControlador {
 		    	Integer idItem = Integer.parseInt(idList[i]);
 		    	Optional<PServicio> personalfound = srepo.findById(idItem);
 				if (!personalfound.isPresent()) {
-					throw new Exception("Personal no encontrado \n");
+					//throw new Exception("Personal no encontrado \n");
+					return new ResponseEntity<Object>(
+							"Personal "+ personalfound.get().getNombres() +" no encontrado",
+							new HttpHeaders(),
+							HttpStatus.NOT_FOUND );
 				}else {
 					//newGrupo.add(personalfound.get());
 					//newGrupo.remo
@@ -217,7 +225,5 @@ public class EquipoControlador {
 
 
 
-@JsonSerialize
-public class EmptyJsonResponse { }
 
 }
