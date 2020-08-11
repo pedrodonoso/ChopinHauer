@@ -101,33 +101,15 @@ public class PServicioControlador {
 		}else {
 
 			PServicio PServiciofound = newPServicio.get();
+
 			
-			if(upPServicio.getNombres() != null) {
-                PServiciofound.setNombres(upPServicio.getNombres());
-            } 
-			if(upPServicio.getApellidos() != null) {
-                PServiciofound.setApellidos(upPServicio.getApellidos());
-            }
-            if(upPServicio.getRun() != null) {
-                PServiciofound.setRun(upPServicio.getRun());
-            }
-            if(upPServicio.getProfesion() != null) {
-                PServiciofound.setProfesion(upPServicio.getProfesion());
-            }
-            if(upPServicio.getTelefono() != null) {
-                PServiciofound.setTelefono(PServiciofound.getTelefono());
-            }
-            if(upPServicio.getEmail() != null) {
-                PServiciofound.setEmail(upPServicio.getEmail());
-            }
-			/*
 			PServiciofound.setNombres(upPServicio.getNombres());
 			PServiciofound.setApellidos(upPServicio.getApellidos() );
 			PServiciofound.setRun(upPServicio.getRun());
 			PServiciofound.setProfesion(upPServicio.getProfesion());
 			PServiciofound.setTelefono(upPServicio.getTelefono());
 			PServiciofound.setEmail(upPServicio.getEmail());
-			*/
+
 
 			//if(checkUserValid(user)) {
 			//	user = repositorio.save(user);
@@ -156,26 +138,7 @@ public class PServicioControlador {
 		newPServicio.setEmail(newPServicio.getEmail());
 		*/
 		// validacion de datos
-		
-		if(newPServicio.getNombres() == null) {
-			newPServicio.setNombres("");
-        }
-        if(newPServicio.getApellidos() == null) {
-        	newPServicio.setApellidos("");
-        }
-        if(newPServicio.getRun() == null) {
-        	newPServicio.setRun(0);
-        }
-        if(newPServicio.getProfesion() != null) {
-        	newPServicio.setProfesion("");
-        }
-        if(newPServicio.getTelefono() != null) {
-        	newPServicio.setTelefono(0);
-        }
-        if(newPServicio.getEmail() != null) {
-        	newPServicio.setEmail("");
-        }
-		
+
 	    repo.save(newPServicio);
 	    return new ResponseEntity<Object>(
 	    		newPServicio,
