@@ -16,23 +16,25 @@ public class PServicio implements Serializable {
 
     private Integer id;
     private String nombres, apellidos;
-    Integer run;
+    private String run;
     private String profesion;
     private Integer telefono;
     private String email;
-    
+    private boolean borradologico;
+
+
     public Integer getId() {
         return id;
     }
     public String getNombres() {
         return nombres;
     }
-    
+
     public String getApellidos() {
 		return apellidos;
 	}
-	
-	public Integer getRun() {
+
+	public String getRun() {
         return run;
     }
     public String getProfesion() {
@@ -44,8 +46,11 @@ public class PServicio implements Serializable {
     public String getEmail() {
         return email;
     }
-    
-    
+    public boolean getBorradologico() {
+        return borradologico;
+    }
+
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -55,7 +60,7 @@ public class PServicio implements Serializable {
     public void setApellidos(String apellidos) {
 		this.apellidos = apellidos;
 	}
-    public void setRun(Integer run) {
+    public void setRun(String run) {
         this.run = run;
     }
     public void setProfesion(String profesion) {
@@ -66,5 +71,8 @@ public class PServicio implements Serializable {
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+    public void setBorradologico(boolean borradologico) {
+        this.borradologico = borradologico;
     }
 }
